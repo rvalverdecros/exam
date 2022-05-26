@@ -28,9 +28,13 @@ private fun confdatabase(args: Array<String>) {
                 println("Procesado: Añadida participación del grupo $primerdato en el CTF $segundato con una puntuación de $tercerdato puntos.")
                 val lista = conctf.selectAllCTFS()
                 val mejoresCtfByGroupId = calculaMejoresResultados(lista)
-                //println(mejoresCtfByGroupId.keys.first().toInt())
-                val idgrupo = mejoresCtfByGroupId.keys.first().toInt()
-                congrupo.updateGrupo(Grupo(grupoid = idgrupo,grupodesc = "",mejorposCTFid = tercerdato))
+                mejoresCtfByGroupId.values.forEach{ mejoresCtfByGroupId ->
+                    var grupo = congrupo.selectById(mejoresCtfByGroupId.second.grupoId)
+                    grupo?.let { elGrupo ->
+                        elGrupo.mejorposCTFid = mejoresCtfByGroupId.second.CTFid
+                        congrupo.updateGrupo(elGrupo.grupoid,elGrupo.mejorposCTFid)
+                    }
+                }
             } else if (args.size == 3 && args.contains("-d")) {
                 val primerdato = args[1].toInt()
                 val segundato = args[2].toInt()

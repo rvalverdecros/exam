@@ -14,7 +14,7 @@ class GrupoDao (private val c: Connection) {
         private const val SELECT_GRUPOS_BY_ID = "select grupoid, grupodesc, mejorposCTFid from GRUPOS where grupoid =?"
         private const val DELETE_GRUPOS_SQL = "delete from GRUPOS where grupoid = ?;"
         private const val UPDATE_GRUPOS_SQL =
-            "update GRUPOS set grupoid = ?,grupodesc= ?, mejorposCTFid =? where grupoid = ?;"
+            "update GRUPOS set grupoid = ?,mejorposCTFid =? where grupoid = ?;"
     }
     fun prepareTable() {
         val metaData = c.metaData
@@ -105,13 +105,14 @@ class GrupoDao (private val c: Connection) {
         }
         return grupos
     }
-    fun updateGrupo(grupo:Grupo): Boolean {
+    fun updateGrupo(id:Int, mejor:Int): Boolean {
         var rowUpdated = false
 
         try {
             c.prepareStatement(UPDATE_GRUPOS_SQL).use { st ->
-                st.setInt(1,grupo.grupoid)
-                st.setInt(2,grupo.mejorposCTFid)
+                st.setInt(1,id)
+                st.setInt(2,mejor)
+                st.setInt(3,id)
                 rowUpdated = st.executeUpdate() > 0
             }
             c.commit()
