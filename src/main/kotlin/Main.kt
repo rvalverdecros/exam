@@ -38,6 +38,7 @@ private fun confdatabase(args: Array<String>) {
             } else if (args.size == 3 && args.contains("-d")) {
                 val primerdato = args[1].toInt()
                 val segundato = args[2].toInt()
+                //Arreglar
                 val res = conctf.deleteCTFSById(primerdato, segundato)
                 if (res == true) {
                     println("Procesado: Eliminada participación del grupo $primerdato en el CTF $segundato.")
